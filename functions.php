@@ -17,19 +17,43 @@ function soames_admin_menu() {
 }
 add_action( 'admin_menu', 'soames_admin_menu' );
 
+function soames_sanitize_frontend_url( $url ) {
+    $url = esc_url_raw( trim( $url ) );
+    if ( $url && ! wp_http_validate_url( $url ) ) {
+        add_settings_error(
+            'soames_frontend_url',
+            'invalid_url',
+            'Please enter a valid URL including http:// or https://.',
+            'error'
+        );
+        return get_option( 'soames_frontend_url' );
+    }
+    return $url;
+}
+
 function soames_register_settings() {
     register_setting( 'soames_options', 'soames_frontend_url', [
         'type'              => 'string',
-        'sanitize_callback' => 'esc_url_raw',
+        'sanitize_callback' => 'soames_sanitize_frontend_url',
         'default'           => '',
     ] );
 }
 add_action( 'admin_init', 'soames_register_settings' );
 
 function soames_settings_page() {
+    if ( isset( $_GET['settings-updated'] ) ) {
+        $errors = get_settings_errors( 'soames_frontend_url' );
+        if ( empty( $errors ) ) {
+            add_settings_error( 'soames_messages', 'soames_saved', 'Settings saved.', 'updated' );
+        }
+    }
     ?>
     <div class="wrap">
         <h1>Soames Settings</h1>
+        <?php
+        settings_errors( 'soames_messages' );
+        settings_errors( 'soames_frontend_url' );
+        ?>
         <form method="post" action="options.php">
             <?php settings_fields( 'soames_options' ); ?>
             <table class="form-table">
