@@ -191,8 +191,8 @@ function soames_overlay_opacity_render_meta_box( $post ) {
     $value   = get_post_meta( $post->ID, 'soames_overlay_opacity', true ) ?: '0.6';
     $options = [ '0.2', '0.3', '0.4', '0.5', '0.6', '0.7' ];
     wp_nonce_field( 'soames_overlay_opacity_save', 'soames_overlay_opacity_nonce' );
-    echo '<label for="soames_overlay_opacity">Opacity (0 = transparent, 1 = opaque)</label>';
-    echo '<select id="soames_overlay_opacity" name="soames_overlay_opacity" style="width:100%;margin-top:6px">';
+    echo '<label for="soames_overlay_opacity" style="display:block;margin-bottom:6px">Overlay opacity</label>';
+    echo '<select id="soames_overlay_opacity" name="soames_overlay_opacity" style="width:100%;box-sizing:border-box">';
     foreach ( $options as $opt ) {
         $selected = selected( $value, $opt, false );
         echo "<option value=\"{$opt}\" {$selected}>{$opt}</option>";
