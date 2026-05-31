@@ -104,21 +104,23 @@ function soames_rest_preview( WP_REST_Request $request ) {
             $bp_thumb_id   = get_post_thumbnail_id( $blog_page_id );
             $bp_thumb_src  = $bp_thumb_id ? wp_get_attachment_image_src( $bp_thumb_id, 'full' ) : null;
             $blog_hero = [
-                'title'   => $blog_page ? get_the_title( $blog_page ) : null,
-                'excerpt' => $blog_page ? $blog_page->post_excerpt : null,
-                'guid'    => $bp_thumb_src ? $bp_thumb_src[0] : null,
+                'title'          => $blog_page ? get_the_title( $blog_page ) : null,
+                'excerpt'        => $blog_page ? $blog_page->post_excerpt : null,
+                'guid'           => $bp_thumb_src ? $bp_thumb_src[0] : null,
+                'overlayOpacity' => get_post_meta( $blog_page_id, 'soames_overlay_opacity', true ) ?: '0.6',
             ];
         }
     }
 
     return [
-        'type'          => $data['type'],
-        'title'         => get_the_title( $post ),
-        'content'       => apply_filters( 'the_content', $post->post_content ),
-        'excerpt'       => apply_filters( 'the_excerpt', $post->post_excerpt ),
-        'date'          => get_the_date( 'F d, Y', $post ),
-        'featuredImage' => $featured_image,
-        'blogHero'      => $blog_hero,
+        'type'           => $data['type'],
+        'title'          => get_the_title( $post ),
+        'content'        => apply_filters( 'the_content', $post->post_content ),
+        'excerpt'        => apply_filters( 'the_excerpt', $post->post_excerpt ),
+        'date'           => get_the_date( 'F d, Y', $post ),
+        'overlayOpacity' => get_post_meta( $post->ID, 'soames_overlay_opacity', true ) ?: '0.6',
+        'featuredImage'  => $featured_image,
+        'blogHero'       => $blog_hero,
     ];
 }
 
