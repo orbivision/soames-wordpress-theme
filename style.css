@@ -1,12 +1,15 @@
 @charset "UTF-8";
 /*
 Theme Name: Soames Headless CMS
-Author: John E. Fritz
+Theme URI: https://soames.app
+Author: Orbi Software
 Author URI: https://www.orbisoftware.com
-Description: Headless CMS theme for use with Gatsby + Soames.
-Requires at least: WordPress 4.9.6
-Version: 1.0
+Description: Companion theme for a headless WordPress serving the Soames Astro front end. It renders no front end of its own — index.php redirects requests to the configured Soames site, and functions.php declares the theme supports (custom logo, featured images, page excerpts) the editor needs. All Soames functionality lives in the Soames plugin, which this theme requires.
+Requires at least: 6.5
+Tested up to: 7.0
+Requires PHP: 7.4
+Version: 0.9.0
 License: GNU General Public License v2 or later
-License URI: LICENSE
-Text Domain: gatsby
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: soames
 */
