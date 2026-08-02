@@ -4,11 +4,11 @@ Theme Name: Soames Headless CMS
 Theme URI: https://soames.app
 Author: Orbi Software
 Author URI: https://www.orbisoftware.com
-Description: Companion theme for a headless WordPress serving the Soames Astro front end. It renders no front end of its own — index.php redirects requests to the configured Soames site, and functions.php declares the theme supports (custom logo, featured images, page excerpts) the editor needs. All Soames functionality lives in the Soames plugin, which this theme requires.
+Description: RETIRED — no longer needed. Everything this theme did moved into the Soames plugin in version 1.0.0, including the front-end redirect. Install the Soames plugin and use any theme you like; this one renders nothing and receives no updates.
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
-Version: 0.9.0
+Version: 1.0.0
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: soames

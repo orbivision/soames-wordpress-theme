@@ -1,47 +1,45 @@
-# Soames Headless CMS — WordPress theme
+# Soames Headless CMS — WordPress theme (retired)
 
-Companion theme for a WordPress install acting as a headless CMS behind the
-[Soames Astro front end](https://github.com/orbivision/soames-astro-theme).
+> **This theme is retired as of Soames plugin 1.0.0 (ORBI-58). You do not need it.**
+> Everything it did now lives in the
+> [Soames plugin](https://github.com/orbivision/soames-wordpress-plugin). Install that, use
+> whatever WordPress theme you like, and delete this one whenever convenient.
 
-It is four files and renders nothing:
+## What happened
 
-- **`index.php`** — redirects every front-end request to the site configured in the Soames
-  plugin's `soames_frontend_url` setting. Posts go to `/blog/<path>`, pages to `/<path>`
-  (302), everything else 301s to the site root. Previews are deliberately exempt — they have
-  to render inside WordPress.
-- **`functions.php`** — `custom-logo`, `post-thumbnails`, and page excerpt support. These
-  have to be theme-side; everything else moved into the plugin in ORBI-12.
-- **`style.css`** — the theme header only. There are no styles, because nothing renders.
-- **`screenshot.png`** — the admin thumbnail.
+The theme existed to do two things, and both moved into the plugin so that Soames is a single
+artifact instead of two:
 
-## Requires
+| Was here | Now |
+|---|---|
+| `index.php` — redirect front-end requests to the published Soames site | `includes/frontend-redirect.php` in the plugin, on `template_redirect` |
+| `add_theme_support( 'post-thumbnails' )` | Declared by the plugin on `after_setup_theme` |
+| `add_theme_support( 'custom-logo' )` | **Dropped.** Nothing read it — Soames serves its logo from its own `soames_logo_id` setting |
+| `add_post_type_support( 'page', 'excerpt' )` | Already in the plugin; was duplicated here |
 
-The [Soames plugin](https://github.com/orbivision/soames-wordpress-plugin), which holds the
-real functionality — settings, blocks, the Knowledge Base post type, preview support, and the
-WPGraphQL extensions. The theme alone does nothing: without `soames_frontend_url`, which the
-plugin owns, `index.php` returns without redirecting.
+The plugin's redirect is also a **better** version than the one deleted from here. It fixes
+two bugs this theme shipped with:
 
-## Status: expected to be absorbed into the plugin (ORBI-57)
+- The blog base was hardcoded to `/blog`, while the Astro front end derives it from
+  WordPress's **Posts page** setting. On any site whose posts page used a different slug —
+  `news`, `articles` — this theme sent visitors to a URL the front end never generates.
+- Knowledge Base articles (`/docs/<slug>`) matched neither `is_singular('post')` nor
+  `is_page()`, so they hit the catch-all and were redirected to the front end's **home page**,
+  losing the article.
 
-**Don't invest in this repo.** The intent is to move `index.php`'s redirect and the
-`add_theme_support()` calls into the Soames plugin — the way
-[Faust.js](https://wordpress.org/plugins/faustwp/) does it — so users install one artifact
-instead of two. That's a behavior change on every install, so it gets its own project rather
-than riding along with the versioning work.
+It also switches the catch-all from a 301 to a 302, since the destination is a
+user-configurable setting and a hard-cached 301 would strand visitors if it ever changed.
 
-While it's in this state:
+## If you are upgrading
 
-- **No release pipeline, deliberately.** The plugin gets tag-triggered GitHub Releases with a
-  built zip; this theme doesn't, because it's likely to be deleted. Install it by cloning or
-  with GitHub's "Download ZIP" — there's no build step and no dev-only files, so the source
-  tree *is* the theme.
-- **Versioned only so the header stops lying.** `0.9.0` matches the plugin's restart. The
-  header previously read `1.0` and described a Gatsby integration superseded back in ORBI-25.
-- **It will not go to the wordpress.org theme directory.** Theme review requires displaying
-  content through the standard template files; a theme whose whole job is redirecting can't
-  satisfy that, and reworking it to pass would mean undoing the point of it. The plugin
-  directory has no such problem — that's where Faust.js lives.
+Nothing to do. Update the Soames plugin to 1.0.0 or newer and the redirect keeps working; the
+plugin runs before template loading, so this theme is inert whether or not it stays active.
+Switch to another theme whenever you like.
 
-## Version
+## Why this repo still exists
 
-`0.9.0`, pairing with Soames plugin `>= 0.9.0`. Nothing enforces the pairing.
+It is a tombstone. Deleting a repository that someone may have cloned or linked is worse than
+leaving a clear explanation at the address they already have. The theme is not published
+anywhere, has no release pipeline, and will not receive updates.
+
+Licensed GPL-2.0-or-later.
